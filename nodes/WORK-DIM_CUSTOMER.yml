@@ -95,6 +95,18 @@ steps:
                     stepCounter: 692452ce-4c66-49d2-b10b-9d18e8156d3f
                 transform: ""
           - columnReference:
+              columnCounter: ac24948f-ab74-44a9-b347-787bd3e7cde8
+              stepCounter: 2ae24f5b-f960-4a1a-9a49-b83e16d1f3d7
+            dataType: VARCHAR(25)
+            description: ""
+            name: N_NATIONNAME
+            nullable: true
+            sourceColumnReferences:
+              - columnReferences:
+                  - columnCounter: 5fc484f3-4035-4577-b70d-1964e07fdf70
+                    stepCounter: 61442267-3866-4287-a76d-e69250cb6108
+                transform: ""
+          - columnReference:
               columnCounter: 0f1146c1-526a-46ee-a953-df061a992089
               stepCounter: 2ae24f5b-f960-4a1a-9a49-b83e16d1f3d7
             dataType: STRING
@@ -261,13 +273,21 @@ steps:
         cteString: ""
         enabledColumnTestIDs: []
         sourceMapping:
-          - customSQL:
+          - aliases:
+              STG_CUSTOMER: 692452ce-4c66-49d2-b10b-9d18e8156d3f
+              STG_NATION: 61442267-3866-4287-a76d-e69250cb6108
+            customSQL:
               customSQL: ""
             dependencies:
               - locationName: WORK
                 nodeName: STG_CUSTOMER
+              - locationName: WORK
+                nodeName: STG_NATION
             join:
-              joinCondition: FROM {{ ref('WORK', 'STG_CUSTOMER') }} "STG_CUSTOMER"
+              joinCondition: |-
+                FROM {{ ref('WORK', 'STG_CUSTOMER') }} "STG_CUSTOMER"
+                LEFT JOIN {{ ref('WORK', 'STG_NATION') }} "STG_NATION"
+                ON "STG_CUSTOMER"."C_NATIONKEY" = "STG_NATION"."N_NATIONKEY"
             name: DIM_CUSTOMER
             noLinkRefs: []
       name: DIM_CUSTOMER
